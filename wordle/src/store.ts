@@ -13,6 +13,8 @@ type GameInfo = {
 type WordleStore = {
     gameInfo: GameInfo
     createGameId: () => Promise<void>
+    addLetter: (key: string) => void
+    localGuesses: string[][]
 }
 
 const createGame = async () => {
@@ -42,6 +44,9 @@ const getGameInfo = async (gameId: string) => {
 }
 
 
+/**
+ * Zustand Store
+ */
 export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
      gameInfo: {
@@ -51,6 +56,7 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         attemptsLeft: 5,
         wordToGuess: ""
     },
+    localGuesses: Array(5).fill(null).map(() => []),
 
     createGameId: async() => {
         const {gameId} = await createGame()
@@ -60,5 +66,20 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
                 gameInfo
             }))
         }
-    }
+    },
+
+     addLetter: (letter: string) => {
+        set((state) => {
+            const updatedGuesses = [...state.localGuesses]
+            const rowIndex = state.gameInfo.guesses.length
+            const currentRow = updatedGuesses[rowIndex] || []
+            if (currentRow.length >= 5) return {}
+
+            updatedGuesses[rowIndex] = [...currentRow, letter]
+
+            return{
+                localGuesses: updatedGuesses
+            }
+        });
+    },
 })))

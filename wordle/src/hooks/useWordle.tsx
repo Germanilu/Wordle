@@ -1,13 +1,17 @@
-
+import { useWordleStore } from "../store";
 
 const useWordle = () => {
 
-    const handleKeyUp = (e:KeyboardEvent) => {
+    const addLetter = useWordleStore((state) => state.addLetter);
+
+    const handleKeyUp = (e: KeyboardEvent) => {
         const key = e.key.toUpperCase()
-        console.log(key)
+        if (/^[A-Z]$/.test(key)) {
+            addLetter(key);
+        }
     }
-    
-    return {handleKeyUp}
+
+    return { handleKeyUp }
 }
 
 export default useWordle;
