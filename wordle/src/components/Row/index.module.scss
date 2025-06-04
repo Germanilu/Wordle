@@ -1,0 +1,13 @@
+.row{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+
+    div{
+        border: 1px solid black;
+        display: block;
+        width: 60px;
+        height: 60px;
+    }
+}

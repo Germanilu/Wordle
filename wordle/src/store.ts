@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import axios from 'axios'
 import { devtools } from 'zustand/middleware'
 
-
-
 type GameInfo = {
     gameId: string;
     status: string;

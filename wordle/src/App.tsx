@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useWordleStore } from "./store"
+import WordleGameBoard from "./components/WordleGameBoard"
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
   return (
     <>
      <h1>Wordle</h1>
+     <WordleGameBoard/>
     </>
   )
 }
