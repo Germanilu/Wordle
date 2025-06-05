@@ -15,6 +15,7 @@ type WordleStore = {
     createGameId: () => Promise<void>
     addLetter: (key: string) => void
     removeLetter: () => void
+    sendRequest: (gameId: string, word: string) => void
     localGuesses: string[][]
 }
 
@@ -50,7 +51,7 @@ const getGameInfo = async (gameId: string) => {
  */
 export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
-     gameInfo: {
+    gameInfo: {
         guesses: [],
         gameId: "",
         status: "",
@@ -59,9 +60,10 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
     },
     localGuesses: Array(5).fill(null).map(() => []),
 
-    createGameId: async() => {
-        const {gameId} = await createGame()
+     createGameId: async () => {
+        const { gameId } = await createGame()
         if (gameId) {
+            // Traer la info del juego creada
             const gameInfo = await getGameInfo(gameId)
             set(() => ({
                 gameInfo
@@ -69,7 +71,7 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         }
     },
 
-     addLetter: (letter: string) => {
+    addLetter: (letter: string) => {
         set((state) => {
             const updatedGuesses = [...state.localGuesses]
             const rowIndex = state.gameInfo.guesses.length
@@ -78,13 +80,13 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
             updatedGuesses[rowIndex] = [...currentRow, letter]
 
-            return{
+            return {
                 localGuesses: updatedGuesses
             }
         });
     },
 
-      removeLetter: () => {
+    removeLetter: () => {
         set((state) => {
             const updatedGuesses = [...state.localGuesses]
             const rowIndex = state.gameInfo.guesses.length
@@ -96,4 +98,19 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
             }
         })
     },
+
+    sendRequest: async (gameId, word) => {
+
+        try {
+            const url = `http://localhost:3000/game/${gameId}/guess?guessWord=${word}`
+            console.log(url)
+            const response = await axios.post(url)
+            const { result, attemptsLeft, isGameWon } = response.data
+            console.log(result,attemptsLeft,isGameWon)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 })))
