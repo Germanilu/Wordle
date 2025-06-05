@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import WordleGrid from '../Grid'
 import useWordle from '../../hooks/useWordle'
+import { useWordleStore } from '../../store'
 
 export default function WordleGame() {
       const {handleKeyUp} = useWordle()
@@ -12,7 +13,7 @@ export default function WordleGame() {
     }, [])
     return (
         <>
-            <WordleGrid />
+            <WordleGrid/>
         </>
     )
 }
