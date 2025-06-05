@@ -1,13 +1,37 @@
-.row{
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: .5rem;
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
 
-    div{
-        border: 1px solid black;
-        display: block;
-        width: 60px;
-        height: 60px;
-    }
+.cell {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  border: 2px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.correct {
+  background-color: #6aaa64;
+  color: white;
+}
+
+.present {
+  background-color: #c9b458;
+  color: white;
+}
+
+.absent {
+  background-color: #787c7e;
+  color: white;
+}
+
+.empty {
+  background-color: white;
+  border: 2px solid #d3d6da;
+  color: black;
 }

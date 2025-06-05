@@ -2,12 +2,18 @@ import { create } from 'zustand';
 import axios from 'axios'
 import { devtools } from 'zustand/middleware'
 
+
+type LetterStatus = {
+    letter: string;
+    status: '0' | '1' | '2';
+};
+
 type GameInfo = {
     gameId: string;
     status: string;
     attemptsLeft: number;
     wordToGuess: string;
-    guesses: string[][];
+    guesses: LetterStatus[][];
 }
 
 type WordleStore = {
@@ -52,7 +58,7 @@ const getGameInfo = async (gameId: string) => {
  */
 export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
-    gameInfo: {
+     gameInfo: {
         guesses: Array(5).fill([]).map(() => []),
         gameId: "",
         status: "",
@@ -100,25 +106,25 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         })
     },
 
-    sendRequest: async (gameId, word) => {
-
+   sendRequest: async (gameId, word) => {
         try {
             const url = `http://localhost:3000/game/${gameId}/guess?guessWord=${word}`
-            console.log(url)
             const response = await axios.post(url)
             const { data } = response
-
             set((state) => {
-                const newGuesses = [...state.gameInfo.guesses, word.split('')]
-
+                const formattedGuess: LetterStatus[] = word.split('').map((letter, i) => ({
+                    letter,
+                    status: data.result[i] as '0' | '1' | '2',
+                }));
+                const newGuesses = [...state.gameInfo.guesses, formattedGuess];
                 return {
                     guessResult: data,
                     gameInfo: {
                         ...state.gameInfo,
                         attemptsLeft: data.attemptsLeft,
                         guesses: newGuesses,
-                        status: data.isGameWon ? 'won' : 'playing',
-                    }
+                        status: data.isGameWon ? 'win' : 'playing',
+                    },
                 }
             })
         } catch (error) {

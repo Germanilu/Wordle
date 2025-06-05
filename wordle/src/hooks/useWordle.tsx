@@ -6,10 +6,10 @@ const useWordle = () => {
     const addLetter = useWordleStore((state) => state.addLetter);
     const removeLetter = useWordleStore((state) => state.removeLetter);
     const sendRequest = useWordleStore((state) => state.sendRequest);
+    const localGuesses = useWordleStore((state)=> state.localGuesses)
+    const gameId = useWordleStore((state)=> state.gameInfo.gameId)
 
     const handleKeyUp = (e: KeyboardEvent) => {
-        const gameId = useWordleStore.getState().gameInfo.gameId;
-        const localGuesses = useWordleStore.getState().localGuesses;
 
         const key = e.key.toUpperCase()
         if (/^[A-Z]$/.test(key)) {
