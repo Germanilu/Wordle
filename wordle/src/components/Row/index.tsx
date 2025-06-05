@@ -26,7 +26,7 @@ export default function WordleRow({ guess }: RowProps) {
         }
 
         return (
-          <div key={i} className={`${styles.cell} ${styledCell}`}>
+          <div key={i} className={`${styles.cell} ${styledCell}`} data-testid="cell">
             {cell.letter}
           </div>
         );
