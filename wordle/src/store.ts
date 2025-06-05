@@ -14,6 +14,7 @@ type WordleStore = {
     gameInfo: GameInfo
     createGameId: () => Promise<void>
     addLetter: (key: string) => void
+    removeLetter: () => void
     localGuesses: string[][]
 }
 
@@ -81,5 +82,18 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
                 localGuesses: updatedGuesses
             }
         });
+    },
+
+      removeLetter: () => {
+        set((state) => {
+            const updatedGuesses = [...state.localGuesses]
+            const rowIndex = state.gameInfo.guesses.length
+            const currentRow = updatedGuesses[rowIndex] || [];
+            if (currentRow.length === 0) return {};
+            updatedGuesses[rowIndex] = currentRow.slice(0, -1);
+            return {
+                localGuesses: updatedGuesses
+            }
+        })
     },
 })))
