@@ -7,7 +7,7 @@ type GameInfo = {
     status: string;
     attemptsLeft: number;
     wordToGuess: string;
-    guesses: [];
+    guesses: string[][];
 }
 
 type WordleStore = {
@@ -17,6 +17,7 @@ type WordleStore = {
     removeLetter: () => void
     sendRequest: (gameId: string, word: string) => void
     localGuesses: string[][]
+    guessResult: { result: string; attemptsLeft: number; isGameWon: boolean } | null
 }
 
 const createGame = async () => {
@@ -52,7 +53,7 @@ const getGameInfo = async (gameId: string) => {
 export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
     gameInfo: {
-        guesses: [],
+        guesses: Array(5).fill([]).map(() => []),
         gameId: "",
         status: "",
         attemptsLeft: 5,
@@ -60,7 +61,7 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
     },
     localGuesses: Array(5).fill(null).map(() => []),
 
-     createGameId: async () => {
+    createGameId: async () => {
         const { gameId } = await createGame()
         if (gameId) {
             // Traer la info del juego creada
@@ -105,12 +106,23 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
             const url = `http://localhost:3000/game/${gameId}/guess?guessWord=${word}`
             console.log(url)
             const response = await axios.post(url)
-            const { result, attemptsLeft, isGameWon } = response.data
-            console.log(result,attemptsLeft,isGameWon)
+            const { data } = response
+
+            set((state) => {
+                const newGuesses = [...state.gameInfo.guesses, word.split('')]
+
+                return {
+                    guessResult: data,
+                    gameInfo: {
+                        ...state.gameInfo,
+                        attemptsLeft: data.attemptsLeft,
+                        guesses: newGuesses,
+                        status: data.isGameWon ? 'won' : 'playing',
+                    }
+                }
+            })
         } catch (error) {
             console.log(error)
         }
     }
-
-
 })))
