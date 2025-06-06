@@ -4,8 +4,8 @@ import WordleGameBoard from "./components/WordleGameBoard"
 
 function App() {
   const localGuesses = useWordleStore((state) => state.localGuesses)
-
   const createGame = useWordleStore((state) => state.createGameId)
+
   useEffect(() => {
     createGame()
   }, [])
@@ -13,10 +13,7 @@ function App() {
   return (
     <>
       <h1>Wordle</h1>
-      {!localGuesses[0].length &&
-        <p>Start typing something...</p>
-
-      }
+      {!localGuesses[0].length && <p>Start typing something...</p>}
       <WordleGameBoard />
     </>
   )

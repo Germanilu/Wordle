@@ -12,7 +12,7 @@ h1, p{
 
 button {
   padding: 0.5rem 1.5rem;
-  background-color: #76bb86; /* azul similar a Tailwind bg-blue-600 */
+  background-color: #76bb86; 
   color: white;
   margin: 0 auto;
   font-weight: 600;
@@ -24,7 +24,7 @@ button {
 }
 
 button:hover {
-  background-color: #318846; /* azul más oscuro */
+  background-color: #318846;
 }
 
 button:active {

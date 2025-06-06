@@ -1,9 +1,14 @@
-import { useWordleStore } from '../../store'
 import WordleRow from '../Row'
+import { useWordleStore } from '../../store'
 import styles from './index.module.scss'
 
-
-export default function Grid() {
+/**
+ * 
+ * @component WordleGrid renders the 5-row Wordle game board.
+ *  It pulls both confirmed guesses and current in-progress guesses from the store, and passes them to the WordleRow component for display.
+ */
+export default function WordleGrid() {
+  
   const guesses = useWordleStore((state) => state.gameInfo.guesses)
   const localGuesses = useWordleStore((state) => state.localGuesses)
 

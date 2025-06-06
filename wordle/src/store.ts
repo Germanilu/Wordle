@@ -27,6 +27,9 @@ type WordleStore = {
     errorMessage: string | null;
 }
 
+/**
+* Creates a new game by requesting a game ID from the backend.
+*/
 const createGame = async () => {
     try {
         const url = 'http://localhost:3000/game'
@@ -40,7 +43,11 @@ const createGame = async () => {
     }
 }
 
-
+/**
+ * Helper function to get game info by game ID.
+ * Returns full game info from the backend.
+ * @param gameId The game ID to fetch info for Example: 66f38c23-7ee4-4bb2-bd6a-a699c03b93e7
+ */
 const getGameInfo = async (gameId: string) => {
     try {
         const url = `http://localhost:3000/game/${gameId}`
@@ -55,7 +62,7 @@ const getGameInfo = async (gameId: string) => {
 
 
 /**
- * Zustand Store
+ * Zustand store for managing the Wordle game state
  */
 export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
@@ -69,6 +76,11 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
     localGuesses: Array(5).fill(null).map(() => []),
     errorMessage: null,
 
+
+    /**
+     * Async action to create a new game and fetch initial game info.
+     * Updates the store with the fresh gameInfo.
+     */
     createGameId: async () => {
         const { gameId } = await createGame()
         if (gameId) {
@@ -79,6 +91,11 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         }
     },
 
+
+    /**
+     * Adds a letter to the current guess (localGuesses).
+     * Prevents adding more than 5 letters per guess.
+     */
     addLetter: (letter: string) => {
         set((state) => {
             const updatedGuesses = [...state.localGuesses]
@@ -94,6 +111,9 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         });
     },
 
+    /**
+     * Removes the last letter from the current guess (localGuesses).
+     */
     removeLetter: () => {
         set((state) => {
             const updatedGuesses = [...state.localGuesses]
@@ -107,6 +127,14 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         })
     },
 
+    /**
+     * Sends the current guess to the backend for validation.
+     * Updates the store with the results, guesses, attempts left, and game status.
+     * Handles errors by setting an error message in the state.
+     * 
+     * @param gameId Current game identifier Example: 66f38c23-7ee4-4bb2-bd6a-a699c03b93e7
+     * @param word The guessed word to send Example: 'ESAVE'
+     */
     sendRequest: async (gameId, word) => {
         try {
             const url = `http://localhost:3000/game/${gameId}/guess?guessWord=${word}`

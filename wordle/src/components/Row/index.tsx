@@ -9,6 +9,13 @@ type RowProps = {
   guess: LetterWithStatus[];
 };
 
+
+/**
+ * @component WordleRow component displays a single row of 5 cells. 
+ * Each cell shows a letter and a color-coded background depending on its status
+ * 
+ * @param guess Structure: [{letter:'E', status:'2'},{letter:'S', status:'2'},{letter:'A', status:'2'},{letter:'V', status:'2'},{letter:'E', status:'2'}]
+ */
 export default function WordleRow({ guess }: RowProps) {
 
   return (
