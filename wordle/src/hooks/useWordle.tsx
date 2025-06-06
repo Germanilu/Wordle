@@ -8,9 +8,11 @@ const useWordle = () => {
     const gameId = useWordleStore((state)=> state.gameInfo.gameId)
     const guesses = useWordleStore((state) => state.gameInfo.guesses);
     const index = guesses.length || 0;
-
+    const isGameWon = useWordleStore((state) => state.guessResult?.isGameWon)
+    
     const handleKeyUp = (e: KeyboardEvent) => {
-
+        
+        if(isGameWon) return;
         const key = e.key.toUpperCase()
         if (/^[A-Z]$/.test(key)) {
             addLetter(key);

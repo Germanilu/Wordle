@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { devtools } from 'zustand/middleware'
 
 
@@ -25,7 +25,6 @@ type WordleStore = {
     localGuesses: string[][]
     guessResult: { result: string; attemptsLeft: number; isGameWon: boolean } | null
     errorMessage: string | null;
-    // setErrorMessage: (message: string | null) => void;
 }
 
 const createGame = async () => {
@@ -69,8 +68,6 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
     },
     localGuesses: Array(5).fill(null).map(() => []),
     errorMessage: null,
-    // setErrorMessage: (message) => set({ errorMessage: message }),
-
     createGameId: async () => {
         const { gameId } = await createGame()
         if (gameId) {
