@@ -1,10 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 body {
+  font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-h1{
+h1, p{
     text-align: center;
 }
 
+button {
+  padding: 0.5rem 1.5rem;
+  background-color: #76bb86; /* azul similar a Tailwind bg-blue-600 */
+  color: white;
+  margin: 0 auto;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background-color: #318846; /* azul más oscuro */
+}
+
+button:active {
+  transform: scale(0.97);
+}

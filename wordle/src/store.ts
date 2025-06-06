@@ -68,6 +68,7 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
     },
     localGuesses: Array(5).fill(null).map(() => []),
     errorMessage: null,
+
     createGameId: async () => {
         const { gameId } = await createGame()
         if (gameId) {
@@ -136,5 +137,5 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
                 set({ errorMessage: 'Unknown error occurred' });
             }
         }
-    }
+    },
 })))
