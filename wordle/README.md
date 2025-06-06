@@ -41,11 +41,11 @@ npm run test
 ## ⏰ Seguimiento de tiempo
 
 Comencè la prueba el 04/06/2025 y la terminé el dia 06/06/2025, Aqui desglosados los horarios: 
-
+```bash
 04/06/2025 desde 17 hasta 19
 05/06/2025 desde 16 hasta 18.30
 06/06/2025 desde 14.30 hasta 16.00
-
+```
 Gracias por esta prueba y la oportunidad!
 
 ## Luciano Germani
