@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { devtools } from 'zustand/middleware'
 
 
@@ -24,6 +24,8 @@ type WordleStore = {
     sendRequest: (gameId: string, word: string) => void
     localGuesses: string[][]
     guessResult: { result: string; attemptsLeft: number; isGameWon: boolean } | null
+    errorMessage: string | null;
+    // setErrorMessage: (message: string | null) => void;
 }
 
 const createGame = async () => {
@@ -58,7 +60,7 @@ const getGameInfo = async (gameId: string) => {
  */
 export const useWordleStore = create<WordleStore>()(devtools((set) => ({
 
-     gameInfo: {
+    gameInfo: {
         guesses: Array(5).fill([]).map(() => []),
         gameId: "",
         status: "",
@@ -66,11 +68,12 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         wordToGuess: ""
     },
     localGuesses: Array(5).fill(null).map(() => []),
+    errorMessage: null,
+    // setErrorMessage: (message) => set({ errorMessage: message }),
 
     createGameId: async () => {
         const { gameId } = await createGame()
         if (gameId) {
-            // Traer la info del juego creada
             const gameInfo = await getGameInfo(gameId)
             set(() => ({
                 gameInfo
@@ -106,12 +109,13 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
         })
     },
 
-   sendRequest: async (gameId, word) => {
+    sendRequest: async (gameId, word) => {
         try {
             const url = `http://localhost:3000/game/${gameId}/guess?guessWord=${word}`
             const response = await axios.post(url)
             const { data } = response
             set((state) => {
+
                 const formattedGuess: LetterStatus[] = word.split('').map((letter, i) => ({
                     letter,
                     status: data.result[i] as '0' | '1' | '2',
@@ -119,6 +123,7 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
                 const newGuesses = [...state.gameInfo.guesses, formattedGuess];
                 return {
                     guessResult: data,
+                    errorMessage: null,
                     gameInfo: {
                         ...state.gameInfo,
                         attemptsLeft: data.attemptsLeft,
@@ -128,7 +133,11 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
                 }
             })
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error) && error.response) {
+                set({ errorMessage: error.response.data.msg });
+            } else {
+                set({ errorMessage: 'Unknown error occurred' });
+            }
         }
     }
 })))
