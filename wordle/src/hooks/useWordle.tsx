@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { useWordleStore } from "../store";
 
 const useWordle = () => {
-    const [index, setIndex] = useState(0)
     const addLetter = useWordleStore((state) => state.addLetter);
     const removeLetter = useWordleStore((state) => state.removeLetter);
     const sendRequest = useWordleStore((state) => state.sendRequest);
     const localGuesses = useWordleStore((state)=> state.localGuesses)
     const gameId = useWordleStore((state)=> state.gameInfo.gameId)
+    const guesses = useWordleStore((state) => state.gameInfo.guesses);
+    const index = guesses.length || 0;
 
     const handleKeyUp = (e: KeyboardEvent) => {
 
@@ -23,10 +23,10 @@ const useWordle = () => {
         if (key === 'ENTER') {
             if (localGuesses[index].length < 5) {
                 console.log('es menor q 5')
+                return 
             }
             const word = localGuesses[index].join("")
             sendRequest(gameId, word)
-            setIndex(prev => prev + 1)
         }
     }
 
