@@ -25,6 +25,7 @@ type WordleStore = {
     localGuesses: string[][]
     guessResult: { result: string; attemptsLeft: number; isGameWon: boolean } | null
     errorMessage: string | null;
+    setErrorMessage: (msg: string | null) => void
 }
 
 /**
@@ -166,4 +167,6 @@ export const useWordleStore = create<WordleStore>()(devtools((set) => ({
             }
         }
     },
+
+     setErrorMessage: (msg: string | null) => set(() => ({ errorMessage: msg })),
 })))

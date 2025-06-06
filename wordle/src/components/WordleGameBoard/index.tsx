@@ -29,11 +29,11 @@ export default function WordleGame() {
       <WordleGrid />
       {isGameWon &&
         <>
-          <p>Congratulation, you won the game! </p>
-          <button onClick={() => window.location.reload()}>Restart</button>
+          <p>Felicidades, ganaste el juego! </p>
+          <button onClick={() => window.location.reload()}>Reiniciar</button>
         </>
       }
-      {attemptsLeft == 1 && !isGameWon &&<p>No more attempt, the correct word was : {wordToGuess}</p>}
+      {attemptsLeft == 1 && !isGameWon &&<p>No quedan más intentos, la palabra correcta era: {wordToGuess}</p>}
       {errorMessage}
     </div>
   )

@@ -14,6 +14,7 @@ const useWordle = () => {
     const gameId = useWordleStore((state) => state.gameInfo.gameId)
     const guesses = useWordleStore((state) => state.gameInfo.guesses);
     const isGameWon = useWordleStore((state) => state.guessResult?.isGameWon)
+    const setErrorMessage = useWordleStore((state) => state.setErrorMessage);
     const index = guesses.length || 0;
 
     /**
@@ -41,6 +42,7 @@ const useWordle = () => {
 
         if (key === 'ENTER') {
             if (localGuesses[index].length < 5) {
+                setErrorMessage('La palabra debe tener 5 letras');
                 return
             }
             const word = localGuesses[index].join("")

@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <h1>Wordle</h1>
-      {!localGuesses[0].length && <p>Start typing something...</p>}
+      {!localGuesses[0].length && <p>Empieza a escribir algo...</p>}
       <WordleGameBoard />
     </>
   )
